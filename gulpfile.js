@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var watch=require('gulp-watch');
 var connect = require('gulp-connect');
+var jshint=require('gulp-jshint');
 
 gulp.task('webserver',function () {
   connect.server({
@@ -9,7 +10,15 @@ gulp.task('webserver',function () {
   });
 });
 
+gulp.task('jsLint', function () {
+    gulp.src('./JavaScript/*.js') // path to your files
+    .pipe(jshint())
+    .pipe(jshint.reporter()); // Dump results
+});
+
+
 gulp.task('livereload',function () {
+  watch(['d3js/js/*.js']).pipe(jshint()).pipe(jshint.reporter());
   watch(['d3js/*.html']).pipe(connect.reload());
 });
 
