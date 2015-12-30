@@ -2,11 +2,32 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <script type="text/javascript" src="../node_modules/d3/d3.js">
+    <script type="text/javascript" src="../node_modules/modernizr/modernizr.js">
     </script>
+    <script type="text/javascript" src="./js/yepnope.js">
+    </script>
+    <script type="text/javascript">
+        if(Modernizr.svg&&Modernizr.inlinesvg){
+          yepnope.injectJs({src:'../node_modules/d3/d3.js'})
+        }else{
+          alert('All examples will be showing in browsers which support svg feature! please upgrade your browser!')
+        }
+    </script>
+
+    <style media="screen">
+      svg .pumpkin{
+        fill:yellow;
+        stroke:orange;
+        stroke-width:5;
+      }
+    </style>
     <title>D3.JS</title>
   </head>
   <body>
     <h1>Hello world</h1>
+    <svg width="200" height="300">
+      <circle cx="100" cy="100" r="30"class="pumpkin"></circle>
+      <rect x='0' y='0' width='100' height='30' fill='purple'></rect>
+    </svg>
   </body>
 </html>
