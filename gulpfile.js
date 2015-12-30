@@ -11,7 +11,7 @@ gulp.task('webserver',function () {
 });
 
 gulp.task('jsLint', function () {
-    gulp.src('./JavaScript/*.js') // path to your files
+    gulp.src('./js/*.js') // path to your files
     .pipe(jshint())
     .pipe(jshint.reporter()); // Dump results
 });
@@ -19,7 +19,7 @@ gulp.task('jsLint', function () {
 
 gulp.task('livereload',function () {
   watch(['d3js/js/*.js']).pipe(jshint()).pipe(jshint.reporter());
-  watch(['d3js/*.html']).pipe(connect.reload());
+  watch(['d3js/**/*']).pipe(connect.reload());
 });
 
-gulp.task('default',['webserver','livereload']);
+gulp.task('default',['webserver','jsLint','livereload']);
