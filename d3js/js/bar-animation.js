@@ -73,10 +73,9 @@ d3.select('p').on('click',function(){
       return h-yScale(d)+20
     }
   });
-
-
-
 })
+
+
 
 
 

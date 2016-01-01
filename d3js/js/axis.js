@@ -59,4 +59,29 @@ yAxis.scale(yScale).orient('left');
 svg.append('g').attr("class","axis").attr('transform',"translate("+padding+",0)").call(yAxis);
 
 
+d3.select('h1').on('click',function(){
+  var dataset=[];
+  for(var i=0;i<20;i++){
+  var x=Math.floor(Math.random()*w),
+      y=Math.floor(Math.random()*h);
+  dataset.push([x,y]);
+  svg.selectAll('circle').data(dataset)
+   .transition().duration(1000).each('start',function(){
+    d3.select(this).attr('r',3)
+   }).attr({
+     cx:function (d,i) {
+       return xScale(d[0]);
+     },
+     cy:function (d,i) {
+       return yScale(d[1]);
+     },
+     r:function (d,i) {
+       return rScale(d[1]);
+     }
+    }).each('end',function(){
+      d3.select(this).attr('fill','white');
+    });
+}
+
+});
 
