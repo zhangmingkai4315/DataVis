@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+
+
+    <script type="text/javascript" src="../node_modules/d3/d3.js">
+    </script>
+    </script>
+
+    <style media="screen">
+    </style>
+    <title>D3.JS</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h1>Hello D3.js</h1>
+        <div id="graph" class="col-md-12">
+          
+        </div>
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+
+
+    var svg=d3.select('#graph').append('svg').attr({
+      width:1200,
+      height:600
+    });
+
+    svg.append('text').attr({
+      x:10,
+      y:150
+    }).text("Hello svg");
+    
+    svg.append('line').attr({
+      x1:10,
+      y1:10,
+      x2:100,
+      y2:200,
+      stroke:'blue',
+      'stroke-width':3
+    });
+
+    svg.append('rect').attr({
+      x:100,
+      y:50,
+      width:300,height:400,
+      stroke:'green',fill:"orange",rx:20,ry:40,'stroke-width':0.5
+    });
+
+
+    svg.append('circle').attr({
+      cx:350,
+      cy:250,
+      r:100,
+      fill:'green',
+      'fill-opacity':0.5,
+      stroke:'steelblue'
+    });
+
+    svg.append('ellipse').attr({
+      cx:350,cy:250,rx:20,ry:70
+    }).transition().duration(2000)
+    .attr({
+      cx:350,cy:250,rx:70,ry:20
+    }).attr('transform','translate(0,150) rotate(-45,350,250) scale(2)');
+
+    svg.append('path').attr({
+      d:'M 100 100 L 300 100 L 200 300 z',
+      stroke:'black',
+      fill:'red','fill-opacity':0.2
+    });
+
+    
+
+
+
+    </script>
+  </body>
+</html>
