@@ -2,19 +2,20 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-
-
-    <script type="text/javascript" src="../node_modules/d3/d3.js">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="//cdn.bootcss.com/d3/3.5.12/d3.min.js">
     </script>
     </script>
 
     <style media="screen">
     body{
-      background-color: currentColor;
+      background-color: moccasin;
     }
     .primed{
       fill: red;
+    }
+    .turnOrange{
+      fill:orange
     }
     </style>
     <title>D3.JS</title>
@@ -22,14 +23,95 @@
   <body>
     <div class="container">
       <div class="row">
-        <h1>Hello D3.js</h1>
+        <h1>质数螺旋</h1>
+        <h4>质数螺旋（ Ulam spiral — “乌拉姆螺旋”）是在1963年被美籍波兰数学家斯塔尼斯拉夫·乌拉姆（Stanislaw Ulam）（1909年 － 1984年）发现.</h4>
         <div id="graph" class="col-md-12">
-          
+
         </div>
       </div>
     </div>
-    
-    <script type="text/javascript" src="./js/3-1.js">
+
+    <script type="text/javascript">
+
+
+    var width=1200;
+    var height=1000;
+    var svg=d3.select('#graph').append('svg').attr({
+    	width:width,height:height
+    });
+    var dataset=[]
+    dataset.push({data:1,direction:{up:0,down:0,left:0,right:1}});
+    var start=2;
+
+function isPrime(i) {
+  	var ones = "";
+  	while(--i >= 0) ones += "1";
+  	return !/^1?$|^(11+?)\1+$/.test(ones);
+}
+    for(var i=2;i<20;i++){
+    	var groupNumber=(i-1)*8/4;
+    	for(var j=0;j<(i-1)*8;j++){
+    		var direction={up:0,down:0,left:0,right:0};
+    		if(j<groupNumber-1){
+    			direction={up:1,down:0,left:0,right:0};
+    		}
+    		if(j>=groupNumber-1&&j<groupNumber*2-1){
+    			direction={up:0,down:0,left:1,right:0};
+    		}
+    		if(j>=2*groupNumber-1&&j<groupNumber*3-1){
+    			direction={up:0,down:1,left:0,right:0};
+    		}
+    		if(j>=3*groupNumber-1&&j<4*groupNumber*2){
+    			direction={up:0,down:0,left:0,right:1};
+    		}
+
+    		var datapices={data:start++,direction:direction,isPrime:isPrime(start)}
+    		dataset.push(datapices)
+    	}
+    }
+
+
+    var startPoint={x:Math.floor(width/2),y:Math.floor(height/2)};
+
+
+    svg.selectAll('circle').data(dataset).enter().append('circle').attr({
+    	cy:function(d,i){
+    		var temp=startPoint.y;
+    		if(d['direction']['up']){
+    			startPoint['y']-=20;
+    		}
+    		if(d['direction']['down']){
+    			startPoint['y']+=20;
+    		}
+    		return temp;
+    	},
+    	cx:function(d,i){
+    		var temp=startPoint.x;
+    		if(d['direction']['right']){
+    			startPoint['x']+=20;
+    		}
+    		if(d['direction']['left']){
+    			startPoint['x']-=20;
+    		}
+    		return temp;
+    	},
+    	r:10
+    }).classed('primed',function(d,i){
+    	if(d['isPrime']){
+    		return true;
+    	}else{
+    		return false
+    	}
+    });
+    // svg.select('circle').style('fill','black')
+    svg.selectAll('circle').transition().delay(function(d,i){
+      return i*10;
+    }).style('fill',function(d,i){
+      if(!d['isPrime'])
+      return 'orange';
+    });
+
+
     </script>
   </body>
 </html>
