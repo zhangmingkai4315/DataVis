@@ -63,7 +63,6 @@ div.tooltip {
 <script src="lib/topojson.v1.min.js"></script>
 <script>
 d3.select(window).on("resize", throttle);
-
 var zoom = d3.behavior.zoom()
     .scaleExtent([1, 9])
     .on("zoom", move);
