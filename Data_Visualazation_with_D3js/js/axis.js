@@ -28,7 +28,7 @@ svg.selectAll('rect').data(dataset).enter().append('rect')
    fill:function (d,i) {
       return "rgb(145,175,"+Math.floor(d*2)+")";
     }
-});
+}).classed("mybar",true);
 svg.selectAll('text').data(dataset).enter().append('text').text(function (d) {
   return Math.floor(d);
 }).attr({
@@ -81,7 +81,7 @@ svg_1.selectAll('rect').data(dataset).enter().append('rect')
    fill:function (d,i) {
       return "rgb(145,175,"+Math.floor(d*2)+")";
     }
-});
+}).classed("mybar",true);
 svg_1.selectAll('text').data(dataset).enter().append('text').text(function (d) {
   return Math.floor(d);
 }).attr({
