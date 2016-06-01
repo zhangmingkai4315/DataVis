@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>01.05 - Controls</title>
-    <script src="../libs/three.js"></script>
+    <script src="../libs/three.min.js"></script>
     <script src="../libs/OrbitControls.js"></script>
     <script src="../libs/dat.gui.min.js"></script>
     <script src="../libs/stats.min.js"></script>
@@ -51,7 +51,7 @@
           renderer = new THREE.WebGLRenderer();
           renderer.setClearColor(0x000000, 1.0);
           renderer.setSize(window.innerWidth, window.innerHeight);
-          renderer.shadowMapEnabled = true;
+          renderer.shadowMap.enabled = true;
 
           // create a sphere
           /////////////////////////////////////////////////////
@@ -77,6 +77,7 @@
          scene.add(directionalLight);
 
          var ambientLight=new THREE.AmbientLight(0x111111);
+         ambientLight.name='ambient';
          scene.add(ambientLight);
 
           /////////////////////////////////////////////////////
@@ -99,6 +100,8 @@
           control = new function () {
               this.rotationSpeed = 0.005;
               this.opacity = 0.6;
+              this.ambientLightColor = ambientLight.color.getHex();
+              this.directionalLightColor = directionalLight.color.getHex();
           };
 
           // add extras
@@ -109,20 +112,20 @@
           cameraBG=new THREE.OrthographicCamera(-window.innerWidth,window.innerWidth
             ,window.innerHeight,-window.innerHeight
             ,-10000,10000);
-          cameraBG.position.z=50;
+          cameraBG.position.z=60;
           senceBG=new THREE.Scene();
           var materialColor=new THREE.MeshBasicMaterial({
-            map:THREE.ImageUtils.loadTexture('../assets/textures/planets/starry_background.jpg'),
+             map:new THREE.TextureLoader().load('../assets/textures/planets/starry_background.jpg'),
              depthTest: false
           });
           var bgPlane=new THREE.Mesh(new THREE.PlaneGeometry(1,1),materialColor);
           bgPlane.position.z=-100;
           bgPlane.scale.set(window.innerWidth*2,window.innerHeight*2,1)
-          senceBG.add(bgPlane); 
+          senceBG.add(bgPlane);
 
           // setup the composer steps
           // first render the background
-          var bgPass = new THREE.RenderPass(sceneBG, cameraBG);
+          var bgPass = new THREE.RenderPass(senceBG, cameraBG);
           // next render the scene (rotating earth), without clearing the current output
           var renderPass = new THREE.RenderPass(scene, camera);
           renderPass.clear = false;
@@ -145,13 +148,13 @@
       }
       function createEearthMaterial(){
         // 异步的载入图片
-        var earthTexture=THREE.ImageUtils.loadTexture('../assets/textures/planets/earthmap4k.jpg');
+        var earthTexture=new THREE.TextureLoader().load('../assets/textures/planets/earthmap4k.jpg');
         var earthMaterial=new THREE.MeshPhongMaterial();
         earthMaterial.map=earthTexture;  //设置matrial的材质是
         return earthMaterial;
       }
       function createCloudMaterial(){
-        var cloudTexture=THREE.ImageUtils.loadTexture('../assets/textures/planets/fair_clouds_4k.png')
+        var cloudTexture=new THREE.TextureLoader().load('../assets/textures/planets/fair_clouds_4k.png')
         var cloudMaterial=new THREE.MeshPhongMaterial();
         cloudMaterial.map=cloudTexture;  //设置matrial的材质是
         cloudMaterial.transparent=true;
@@ -189,9 +192,12 @@
 
           scene.getObjectByName('earth').rotation.y+=control.rotationSpeed;
           scene.getObjectByName('cloud').rotation.y+=control.rotationSpeed;
+          scene.getObjectByName('ambient').color = new THREE.Color(control.ambientLightColor);
+          scene.getObjectByName('directional').color = new THREE.Color(control.directionalLightColor);
           // and render the scene
-          renderer.render(scene, camera);
-
+          // renderer.render(scene, camera);
+          renderer.autoClear = false;
+          composer.render();
           // render using requestAnimationFrame
           requestAnimationFrame(render);
       }
