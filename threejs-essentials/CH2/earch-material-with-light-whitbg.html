@@ -63,22 +63,37 @@
           scene.add(earthMesh);
 
 
-         var cloudGeometry=new THREE.SphereGeometry(15.25,60,60);
-         var cloudMaterial=createCloudMaterial();
-         var cloudMesh=new THREE.Mesh(cloudGeometry,cloudMaterial);
-         cloudMesh.name='cloud';
-         scene.add(cloudMesh);
+        //  var cloudGeometry=new THREE.SphereGeometry(15.25,60,60);
+        //  var cloudMaterial=cloudGeometry();
+        //  var cloudMesh=new THREE.Mesh(cloudGeometry,cloudMaterial);
+        //  cloudMesh.name='cloud';
+        //  scene.add(cloudMesh);
 
 
 
-         var directionalLight=new THREE.DirectionalLight(0xffffff,0.5);
-         directionalLight.position.set(100,10,-50);
-         directionalLight.name='directional';
-         scene.add(directionalLight);
+        //  var directionalLight=new THREE.DirectionalLight(0xffffff,2);
+        //  directionalLight.position.set(100,10,-50);
+        //  directionalLight.name='directional';
+        //  scene.add(directionalLight);
+         var spotLight = new THREE.SpotLight( 0xffffff,1 );
+         spotLight.position.set( 500, 100, -100 );
 
-         var ambientLight=new THREE.AmbientLight(0x111111);
+
+         spotLight.castShadow = true;
+
+         spotLight.shadow.mapSize.width = 1024;
+         spotLight.shadow.mapSize.height = 1024;
+
+         spotLight.shadow.camera.near = 100;
+         spotLight.shadow.camera.far = 400;
+         spotLight.shadow.camera.fov = 10;
+         spotLight.name='spotLight';
+         scene.add(spotLight);
+         var ambientLight=new THREE.AmbientLight(0xffffff);
          ambientLight.name='ambient';
          scene.add(ambientLight);
+         var light = new THREE.HemisphereLight( 0xfffffb, 0x080820, 2 );
+scene.add( light );
 
           /////////////////////////////////////////////////////
 
@@ -101,7 +116,7 @@
               this.rotationSpeed = 0.005;
               this.opacity = 0.6;
               this.ambientLightColor = ambientLight.color.getHex();
-              this.directionalLightColor = directionalLight.color.getHex();
+              // this.directionalLightColor = directionalLight.color.getHex();
           };
 
           // add extras
@@ -148,7 +163,7 @@
       }
       function createEearthMaterial(){
         // 异步的载入图片
-        var earthTexture=new THREE.TextureLoader().load('../assets/textures/planets/earthmap4k.jpg');
+        var earthTexture=new THREE.TextureLoader().load('../assets/textures/planets/earthlights10k.jpg');
         var earthMaterial=new THREE.MeshPhongMaterial();
         earthMaterial.map=earthTexture;  //设置matrial的材质是
         return earthMaterial;
@@ -164,6 +179,8 @@
       function addControlGui(controlObject) {
           var gui = new dat.GUI();
           gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
+          gui.addColor(controlObject, 'ambientLightColor');
+          // gui.addColor(controlObject, 'directionalLightColor');
       }
 
       function addStatsObject() {
@@ -191,9 +208,9 @@
           cameraControl.update();
 
           scene.getObjectByName('earth').rotation.y+=control.rotationSpeed;
-          scene.getObjectByName('cloud').rotation.y+=control.rotationSpeed;
+          // scene.getObjectByName('cloud').rotation.y+=control.rotationSpeed;
           scene.getObjectByName('ambient').color = new THREE.Color(control.ambientLightColor);
-          scene.getObjectByName('directional').color = new THREE.Color(control.directionalLightColor);
+          // scene.getObjectByName('spotLight').color = new THREE.Color(control.directionalLightColor);
           // and render the scene
           // renderer.render(scene, camera);
           renderer.autoClear = false;
