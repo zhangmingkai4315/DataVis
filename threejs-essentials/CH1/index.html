@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Three.js</title>
+  </head>
+  <body>
+    <script type="text/javascript" src='../libs/three.js'>
+    </script>
+    <script type="text/javascript">
+      var renderer;
+      var scene;
+      var camera;
+
+      function init(){
+        console.log('Init the threejs things')
+        scene=new THREE.Scene(); //渲染的场景，包含所有的需要render的对象
+        renderer=new THREE.WebGLRenderer();　//将上面的场景内容渲染出来
+        renderer.setClearColor(0x000000,1.0);
+        renderer.setSize(window.innerWidth,window.innerHeight);
+        // renderer.shadowMapEnabled=true;
+        camera=new THREE.PerspectiveCamera(
+          90,
+          window.innerWidth/window.innerHeight,
+          0.1,
+          1000
+        );
+        addCube();
+        addPlane();
+        addLight();
+        camera.position.x=15;
+        camera.position.y=16;
+        camera.position.z=13;
+        camera.lookAt(scene.position);
+
+        document.body.appendChild(renderer.domElement);
+        render();
+
+      }
+      function render(){
+
+        renderer.render(scene,camera);
+        requestAnimationFrame(render);  //创建一个循环，此处将脱离主线程执行
+      }
+
+      function addCube(){
+        // 引入一个方块体
+        var cubeGeometry=new THREE.BoxGeometry(6,4,6);
+        var cubeMaterial=new THREE.MeshLambertMaterial({
+          color:'white'
+        });
+        var cube=new THREE.Mesh(cubeGeometry,cubeMaterial);
+        cube.castShadow=true;
+        scene.add(cube);
+
+
+        //
+      }
+      function addPlane(){
+        var planeGeometry=new THREE.PlaneGeometry(20,20);
+        var planeMatrial=new THREE.MeshLambertMaterial({
+          color:'darkorange'
+        });
+        var plane=new THREE.Mesh(planeGeometry,planeMatrial);
+        plane.receiveShadow=true;
+        plane.rotation.x=-0.5*Math.PI;
+        plane.position.y=-2;
+        scene.add(plane);
+      }
+
+      function addLight(){
+        var spotLight = new THREE.SpotLight( 0xffffff );
+        spotLight.position.set( 100, 1000, 100 );
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+      }
+      window.onload=init;
+      function handleResize(){
+        camera.aspect=window.innerWidth/window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth,window.innerHeight);
+      }
+      window.addEventListener('resize',handleResize,false);
+    </script>
+  </body>
+</html>
