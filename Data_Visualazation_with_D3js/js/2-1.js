@@ -75,31 +75,31 @@ g3.append('path')
     .attr('transform', 'translate(150, 150)')
     .attr('fill', 'lightslategrey');
 
-// var symbols = d3.svg.symbol()
-//         .type(function (d, i) {
-//             if (d[1] > 0) {
-//                 return 'triangle-down';
-//             }else{
-//                 return 'triangle-up';
-//             }
-//         })
-//         .size(function (d, i) {
-//             if (i%2) {
-//                 return 0;
-//             }else{
-//                 return 64;
-//             }
-//         });
+var symbols = d3.svg.symbol()
+        .type(function (d, i) {
+            if (d[1] > 0) {
+                return 'triangle-down';
+            }else{
+                return 'triangle-up';
+            }
+        })
+        .size(function (d, i) {
+            if (i%2) {
+                return 0;
+            }else{
+                return 64;
+            }
+        });
 
-// g2.selectAll('path')
-//     .data(sine)
-//     .enter()
-//     .append('path')
-//     .attr('d', symbols)
-//     .attr('transform', function (d) { return 'translate('+x(d[0])+','+y(d[1])+')'; })
-//     .attr({stroke: 'steelblue',
-//            'stroke-width': 2,
-//            fill: 'white'});
+g2.selectAll('path')
+    .data(sine)
+    .enter()
+    .append('path')
+    .attr('d', symbols)
+    .attr('transform', function (d) { return 'translate('+x(d[0])+','+y(d[1])+')'; })
+    .attr({stroke: 'steelblue',
+           'stroke-width': 2,
+           fill: 'white'});
 
 var chord = d3.svg.chord();
 

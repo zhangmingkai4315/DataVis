@@ -1,22 +1,3 @@
-// var data=[1,2,3,4,5,6,7,8,9,6,6,5,4,4];
-
-// data.map(function(d){
-// 	console.log(d);
-// });
-
-// data.forEach(function(d){
-// 	console.log(d);
-// });
-
-// var reduceResult=data.reduce(function(accumulator,current){
-// 	return accumulator+current;
-// },0);
-
-
-// var filterResult=data.filter(function(d){
-// 	return d%2;
-// });
-
 
 
 var width=1200;
@@ -79,14 +60,11 @@ svg.selectAll('circle').data(dataset).enter().append('circle').attr({
 		return temp;
 	},
 	r:10
-}).classed('primed',function(d){
+}).classed('primed',function(d,i){
 	if(isPrime(d['data'])){
-
 		return true;
 	}else{
 		return false
 	}
 });
-
-
-
+svg.select('circle').style('fill','orange')
