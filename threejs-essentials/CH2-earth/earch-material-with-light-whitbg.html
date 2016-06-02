@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>01.05 - Controls</title>
+    <script src="../../node_modules/d3/d3.min.js"></script>
+    <script src="../libs/three.min.js"></script>
+    <script src="../libs/OrbitControls.js"></script>
+    <script src="../libs/dat.gui.min.js"></script>
+    <script src="../libs/stats.min.js"></script>
+    <script src="../libs/EffectComposer.js"></script>
+    <script src="../libs/RenderPass.js"></script>
+    <script src="../libs/CopyShader.js"></script>
+    <script src="../libs/ShaderPass.js"></script>
+    <script src="../libs/MaskPass.js"></script>
+    </script>
+    <style media="screen">
+      body{
+        margin: 0;
+      }
+    </style>
+</head>
+<body>
+  <script>
+
+  // // global variables
+  //  var renderer;
+  //  var scene;
+  //  var camera;
+  //  var control;
+  //  var stats;
+  //  var cameraControl;
+  //
+  //  // background stuff
+  //  var cameraBG;
+  //  var sceneBG;
+  //  var composer;
+  //  var clock;
+  //
+  //     /**
+  //      * Initializes the scene, camera and objects. Called when the window is
+  //      * loaded by using window.onload (see below)
+  //      */
+  //     function init() {
+  //         clock=new THREE.Clock();
+  //         // create a scene, that will hold all our elements such as objects, cameras and lights.
+  //         scene = new THREE.Scene();
+  //
+  //         // create a camera, which defines where we're looking at.
+  //         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  //
+  //         // create a render, sets the background color and the size
+  //         renderer = new THREE.WebGLRenderer();
+  //         renderer.setClearColor(0x000000, 1.0);
+  //         renderer.setSize(window.innerWidth, window.innerHeight);
+  //         renderer.shadowMap.enabled = true;
+  //
+  //         // create a sphere
+  //         /////////////////////////////////////////////////////
+  //         var sphereGeometry = new THREE.SphereGeometry(15, 30,30);
+  //         var sphereMaterial = createEearthMaterial();
+  //
+  //         var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  //         earthMesh.name = 'earth';
+  //         scene.add(earthMesh);
+  //
+  //
+  //        var cloudGeometry=new THREE.SphereGeometry(15.25,60,60);
+  //        var cloudMaterial=createCloudMaterial();
+  //        var cloudMesh=new THREE.Mesh(cloudGeometry,cloudMaterial);
+  //        cloudMesh.name='cloud';
+  //        scene.add(cloudMesh);
+  //
+  //
+  //
+  //        var directionalLight=new THREE.DirectionalLight(0xffffff,0.5);
+  //        directionalLight.position.set(100,10,-50);
+  //        directionalLight.name='directional';
+  //        scene.add(directionalLight);
+  //
+  //        var ambientLight=new THREE.AmbientLight(0x111111);
+  //        ambientLight.name='ambient';
+  //        scene.add(ambientLight);
+  //
+  //         /////////////////////////////////////////////////////
+  //
+  //
+  //
+  //
+  //         /////////////////////////////////////////////////////
+  //         // position and point the camera to the center of the scene
+  //         camera.position.x = 30;
+  //         camera.position.y = 20;
+  //         camera.position.z = 30;
+  //         camera.lookAt(scene.position);
+  //
+  //         // add controls
+  //         cameraControl = new THREE.OrbitControls(camera);
+  //
+  //
+  //         // setup the control object for the control gui
+  //         control = new function () {
+  //             this.rotationSpeed = 0.005;
+  //             this.opacity = 0.6;
+  //             this.ambientLightColor = ambientLight.color.getHex();
+  //             this.directionalLightColor = directionalLight.color.getHex();
+  //         };
+  //
+  //         // add extras
+  //         addControlGui(control);
+  //         addStatsObject();
+  //
+  //
+  //         cameraBG=new THREE.OrthographicCamera(-window.innerWidth,window.innerWidth
+  //           ,window.innerHeight,-window.innerHeight
+  //           ,-10000,10000);
+  //         cameraBG.position.z=60;
+  //         senceBG=new THREE.Scene();
+  //         var materialColor=new THREE.MeshBasicMaterial({
+  //            map:new THREE.TextureLoader().load('../assets/textures/planets/starry_background.jpg'),
+  //            depthTest: false
+  //         });
+  //         var bgPlane=new THREE.Mesh(new THREE.PlaneGeometry(1,1),materialColor);
+  //         bgPlane.position.z=-100;
+  //         bgPlane.scale.set(window.innerWidth*2,window.innerHeight*2,1)
+  //         senceBG.add(bgPlane);
+  //
+  //         // setup the composer steps
+  //         // first render the background
+  //         var bgPass = new THREE.RenderPass(senceBG, cameraBG);
+  //         // next render the scene (rotating earth), without clearing the current output
+  //         var renderPass = new THREE.RenderPass(scene, camera);
+  //         renderPass.clear = false;
+  //         // finally copy the result to the screen
+  //         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+  //         effectCopy.renderToScreen = true;
+  //
+  //         // add these passes to the composer
+  //         composer = new THREE.EffectComposer(renderer);
+  //         composer.addPass(bgPass);
+  //         composer.addPass(renderPass);
+  //         composer.addPass(effectCopy);
+  //
+  //         // add the output of the renderer to the html element
+  //         document.body.appendChild(renderer.domElement);
+  //
+  //         // call the render function, after the first render, interval is determined
+  //         // by requestAnimationFrame
+  //         render();
+  //     }
+  //     function createEearthMaterial(){
+  //       // 异步的载入图片
+  //       var earthTexture=new THREE.TextureLoader().load('../assets/textures/planets/earthmap4k.jpg');
+  //       var earthMaterial=new THREE.MeshPhongMaterial();
+  //       earthMaterial.map=earthTexture;  //设置matrial的材质是
+  //       return earthMaterial;
+  //     }
+  //     function createCloudMaterial(){
+  //       var cloudTexture=new THREE.TextureLoader().load('../assets/textures/planets/fair_clouds_4k.png')
+  //       var cloudMaterial=new THREE.MeshPhongMaterial();
+  //       cloudMaterial.map=cloudTexture;  //设置matrial的材质是
+  //       cloudMaterial.transparent=true;
+  //       return cloudMaterial;
+  //     }
+  //
+  //     function addControlGui(controlObject) {
+  //         var gui = new dat.GUI();
+  //         gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
+  //     }
+  //
+  //     function addStatsObject() {
+  //         stats = new Stats();
+  //         stats.setMode(0);
+  //
+  //         stats.domElement.style.position = 'absolute';
+  //         stats.domElement.style.left = '0px';
+  //         stats.domElement.style.top = '0px';
+  //
+  //         document.body.appendChild(stats.domElement);
+  //     }
+  //
+  //
+  //     /**
+  //      * Called when the scene needs to be rendered. Delegates to requestAnimationFrame
+  //      * for future renders
+  //      */
+  //     function render() {
+  //
+  //         // update stats
+  //         stats.update();
+  //
+  //         // update the camera
+  //         cameraControl.update();
+  //
+  //         scene.getObjectByName('earth').rotation.y+=control.rotationSpeed;
+  //         scene.getObjectByName('cloud').rotation.y+=control.rotationSpeed;
+  //         scene.getObjectByName('ambient').color = new THREE.Color(control.ambientLightColor);
+  //         scene.getObjectByName('directional').color = new THREE.Color(control.directionalLightColor);
+  //         // and render the scene
+  //         // renderer.render(scene, camera);
+  //         renderer.autoClear = false;
+  //         composer.render();
+  //         // render using requestAnimationFrame
+  //         requestAnimationFrame(render);
+  //     }
+  //
+  //
+  //     /**
+  //      * Function handles the resize event. This make sure the camera and the renderer
+  //      * are updated at the correct moment.
+  //      */
+  //     function handleResize() {
+  //         camera.aspect = window.innerWidth / window.innerHeight;
+  //         camera.updateProjectionMatrix();
+  //         renderer.setSize(window.innerWidth, window.innerHeight);
+  //     }
+  //
+  //     // calls the init function when the window is done loading.
+  //     window.onload = init;
+  //     // calls the handleResize function when the window is resized
+  //     window.addEventListener('resize', handleResize, false);
+
+
+      canvas=document.createElement('canvas');
+      canvas.width=4096;
+      canvas.height=2048;
+      var context=canvas.getContext('2d');
+
+      // 100;60;REYKJAVIK;IS;64;9;N;21;56;W;181;38603;M;CB;G;Y;N;N;Y;;L;G;L;H;4;L;Y;Y;Y;Y;Y;Y;Y;;Y;N;Y;Y;Y;;Y;Y;Y;Y;Y;;Y;;;;;Y;Y;;Y;;Y;Y;Y;Y;;Y;Y;Y;;Y;Y;Y;Y;Y;Y;Y;Y;B;L;L
+      d3.csv('../assets/data/wpi.csv',function(data){
+        data.forEach(function(e){
+          if (e[25] === 'L') {
+          var posY = parseFloat(e[4] + "." + e[5]);
+          var sign = e[6];
+          if (sign === 'S') posY = posY * -1;
+          var posX = parseFloat(e[7] + "." + e[8]);
+          var sign = e[9];
+          if (sign === 'W') posX = posX * -1;
+          var x2 = ((4096 / 360.0) * (180 + posX));
+          var y2 = ((2048 / 180.0) * (90 - posY));
+          context.beginPath();
+          context.arc(x2, y2, 4, 0, 2 * Math.PI);
+          context.fillStyle = 'red';
+          context.fill();
+          context.lineWidth = 2;
+          context.strokeStyle = '#003300';
+          context.stroke();
+          }
+        })
+      })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>

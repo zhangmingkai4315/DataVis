@@ -146,11 +146,29 @@
           // by requestAnimationFrame
           render();
       }
+
       function createEearthMaterial(){
         // 异步的载入图片
-        var earthTexture=new THREE.TextureLoader().load('../assets/textures/planets/earthmap4k.jpg');
-        var earthMaterial=new THREE.MeshPhongMaterial();
-        earthMaterial.map=earthTexture;  //设置matrial的材质是
+        // 分别载入不同样式的图片用于不同的目的
+        // specularMap 用黑白颜色来标记的图片不会去反射灯光效果
+        //
+        var earthTexture = THREE.ImageUtils.loadTexture("../assets/textures/planets/earthmap4k.jpg");
+        var bumpMap = THREE.ImageUtils.loadTexture("../assets/textures/planets/earthbump4k.jpg");
+        var specularMap = THREE.ImageUtils.loadTexture("../assets/textures/planets/earthspec4k.jpg");
+        var normalMap = THREE.ImageUtils.loadTexture("../assets/textures/planets/earth_normalmap_flat4k.jpg");
+
+        var earthMaterial = new THREE.MeshPhongMaterial();
+        earthMaterial.map = earthTexture;
+
+        // specular defines the reflection of the surface
+        earthMaterial.specularMap = specularMap;
+        earthMaterial.specular = new THREE.Color(0x262626);
+
+        // normalmap
+        earthMaterial.normalMap = normalMap;
+        earthMaterial.normalScale = new THREE.Vector2(0.5, 0.7);
+
+
         return earthMaterial;
       }
       function createCloudMaterial(){
