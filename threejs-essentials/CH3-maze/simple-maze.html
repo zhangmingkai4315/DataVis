@@ -82,10 +82,23 @@
         spotLight.shadowCameraFar = 50;
         spotLight.castShadow = true;
 
+
         var ambientLight = new THREE.AmbientLight(0x080808);
         scene.add(ambientLight);
 
         scene.add(spotLight);
+
+
+        var pointLight=new THREE.PointLight();
+        pointLight.color=new THREE.Color(0xff0120);
+        pointLight.intensity=3;
+        pointLight.distance=60;
+        pointLight.name="pointlight";
+
+        pointLight.position=new THREE.Vector3(20,20,20)
+        scene.add(pointLight);
+
+
 
         // setup the control object for the control gui
         control = new function() {

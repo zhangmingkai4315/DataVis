@@ -71,23 +71,23 @@ function init() {
     scene.add(overlayMesh);
 
     // create a cloudGeometry, slighly bigger than the original sphere
-    var cloudGeometry = new THREE.SphereGeometry(15.3, 60, 60);
-    var cloudMaterial = createCloudMaterial();
-    var cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    cloudMesh.name = 'clouds';
-    scene.add(cloudMesh);
+    // var cloudGeometry = new THREE.SphereGeometry(15.3, 60, 60);
+    // var cloudMaterial = createCloudMaterial();
+    // var cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    // cloudMesh.name = 'clouds';
+    // scene.add(cloudMesh);
 
 
 
 
-    // now add some better lighting
-    var ambientLight = new THREE.AmbientLight(0x111111);
+    // now add some better lighting 增加给所有的背景颜色
+    var ambientLight = new THREE.AmbientLight(0x11111f);
     ambientLight.name = 'ambient';
     scene.add(ambientLight);
 
     // add sunlight (light
     var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position = new THREE.Vector3(200, 10, -50);
+    directionalLight.position = new THREE.Vector3(100, 10, 50);
     directionalLight.name = 'directional';
     scene.add(directionalLight);
 
@@ -102,7 +102,7 @@ function init() {
 
     // setup the control object for the control gui
     control = new function () {
-        this.rotationSpeed = 0.001;
+        this.rotationSpeed = 0.005;
         this.ambientLightColor = ambientLight.color.getHex();
         this.directionalLightColor = directionalLight.color.getHex();
     };
@@ -274,7 +274,7 @@ function render() {
 
     scene.getObjectByName('earth').rotation.y += control.rotationSpeed;
     scene.getObjectByName('overlay').rotation.y += control.rotationSpeed;
-    scene.getObjectByName('clouds').rotation.y += control.rotationSpeed * 1.1;
+    // scene.getObjectByName('clouds').rotation.y += control.rotationSpeed * 1.1;
 
     // update light colors
     scene.getObjectByName('ambient').color = new THREE.Color(control.ambientLightColor);

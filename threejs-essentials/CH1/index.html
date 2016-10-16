@@ -77,7 +77,9 @@
       window.onload=init;
       function handleResize(){
         camera.aspect=window.innerWidth/window.innerHeight;
+        // 更新新的镜头位置
         camera.updateProjectionMatrix();
+        // 设置画布的大小尺寸
         renderer.setSize(window.innerWidth,window.innerHeight);
       }
       window.addEventListener('resize',handleResize,false);
